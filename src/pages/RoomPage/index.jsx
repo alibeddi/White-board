@@ -9,7 +9,7 @@ const RoomPage = () => {
 
     const [tool, setTool] = useState("pencil");
     const [color, setColor] = useState('black')
-
+const [elements, setElements] = useState([])
 
     return (
         <div className="row">
@@ -36,7 +36,7 @@ const RoomPage = () => {
                             id="line"
                             checked={tool === "line"}
                             value="line"
-                            onCnange={(e) => setTool(e.target.value)} />
+                            onChange={(e) => setTool(e.target.value)} />
                     </div>
                     <div className="d-flex gap-1 align-items-center ">
                         <label htmlFor="rect">Rectangle</label>
@@ -70,7 +70,12 @@ const RoomPage = () => {
                 </div>
             </div >
             <div className="col-md-10 mx-auto mt-4 canvas-box">
-                <WhiteBoard />
+                <WhiteBoard 
+                canvasRef={canvasRef} 
+                ctxRef={ctxRef}
+                elements={elements}
+                setElements={setElements}
+                tool={tool} />
             </div>
         </div>
     );
