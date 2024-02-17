@@ -8,7 +8,8 @@ const WhiteBoard = ({
     ctxRef,
     elements,
     setElements,
-    tool
+    tool,
+    color
 }) => {
 
 const [isDrawing, setIsDrawing] = useState(false)
@@ -19,9 +20,15 @@ const [isDrawing, setIsDrawing] = useState(false)
     canvas.height = window.innerHeight * 2
 
     const ctx = canvas.getContext('2d')
+
+    ctx.strokeStyle = color
+    ctx.lineWidth = 2
+    ctx.lineCap = 'round'
     ctxRef.current = ctx
 }, [])
-
+useEffect(() => {
+    ctxRef.current.strokeStyle = color
+}, [color])
 useLayoutEffect(() => {
     const roughCanvas=rough.canvas(canvasRef.current)
 if (elements.length > 0) {
@@ -30,13 +37,13 @@ if (elements.length > 0) {
 
     elements.forEach((element) => {
         if (element.type === 'pencil') {
-            roughCanvas.linearPath(element.path)
+            roughCanvas.linearPath(element.path,{stroke:element.stroke,strokeWidth:5,roughness:0.5})
         }else if (element.type === 'line') {
             const {offsetX, offsetY, width, height, stroke} = element
-            roughCanvas.line(offsetX, offsetY, width, height, {stroke})
+            roughCanvas.line(offsetX, offsetY, width, height, {stroke,strokeWidth:5,roughness:0.5})
         }else if (element.type === 'rect') {
             const {offsetX, offsetY, width, height, stroke} = element
-            roughCanvas.rectangle(offsetX, offsetY, width, height, {stroke})
+            roughCanvas.rectangle(offsetX, offsetY, width, height, {stroke,strokeWidth:5,roughness:0.5})
         }
 
     })
@@ -54,7 +61,7 @@ const handleMouseDown = (e) => {
             offsetX,
             offsetY,
             path:[[offsetX,offsetY]],
-            stroke:'black',
+            stroke:color,
         }
     ])}else if (tool === 'line') {
         setElements((prevElements) => [
@@ -65,7 +72,7 @@ const handleMouseDown = (e) => {
                 offsetY,
                 width:offsetX,
                 height:offsetY,
-                stroke:'black',
+                 stroke:color,
             }
         ])}
         else if (tool === 'rect') {
@@ -77,7 +84,7 @@ const handleMouseDown = (e) => {
                     offsetY,
                     width:0,
                     height:0,
-                    stroke:'black',
+                     stroke:color,
                 }
             ])}
 setIsDrawing(true)
