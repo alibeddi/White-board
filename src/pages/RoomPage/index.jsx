@@ -9,28 +9,29 @@ const RoomPage = () => {
 
     const [tool, setTool] = useState("pencil");
     const [color, setColor] = useState('black')
-const [elements, setElements] = useState([])
-const [history , setHistory] = useState([])
+    const [elements, setElements] = useState([])
+    const [history, setHistory] = useState([])
 
 
-const handleUndo = () => {
-    if (elements.length > 0) {
-        setHistory((prev) => [...prev, elements[elements.length - 1]])
-        setElements((prev) => prev.slice(0,prev.length-1))
+    const handleUndo = () => {
+        if (elements.length > 0) {
+            setHistory((prev) => [...prev, elements[elements.length - 1]])
+            setElements((prev) => prev.slice(0, prev.length - 1))
+        }
     }
-}
-const handleRedo = () => {
-    if (history.length > 0) {
-        setElements((prev) => [...prev, history[history.length - 1]])
-        setHistory((prev) => prev.slice(0,prev.length-1))
+    const handleRedo = () => {
+        if (history.length > 0) {
+            setElements((prev) => [...prev, history[history.length - 1]])
+            setHistory((prev) => prev.slice(0, prev.length - 1))
+        }
     }
-}
-const handleClearCanvas = () => {
-    const canvas = canvasRef.current
-    const ctx=canvas.getContext('2d')
-    ctx.fillRect='white'
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    setElements([])}
+    const handleClearCanvas = () => {
+        const canvas = canvasRef.current
+        const ctx = canvas.getContext('2d')
+        ctx.fillRect = 'white'
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        setElements([])
+    }
     return (
         <div className="row">
             <h1 className="text-center py-5">White Board Sharing App
@@ -98,12 +99,12 @@ const handleClearCanvas = () => {
                 </div>
                 <dir className='col-md-3 d-flex gap-2'>
                     <button className="btn btn-primary mt-1"
-                    disabled={elements.length === 0}
-                    onClick={()=>handleUndo()}
+                        disabled={elements.length === 0}
+                        onClick={() => handleUndo()}
                     >Undo</button>
                     <button className="btn btn-outline-primary mt-1"
-                    disabled={history.length< 1}
-                    onClick={()=>handleRedo()}
+                        disabled={history.length < 1}
+                        onClick={() => handleRedo()}
                     >Redo</button>
                 </dir>
                 <div className="col-md-2">
@@ -111,14 +112,14 @@ const handleClearCanvas = () => {
                 </div>
             </div >
             <div className="col-md-10 mx-auto mt-4 canvas-box">
-                <WhiteBoard 
-                canvasRef={canvasRef} 
-                ctxRef={ctxRef}
-                elements={elements}
-                setElements={setElements}
-                color={color}
-                
-                tool={tool} />
+                <WhiteBoard
+                    canvasRef={canvasRef}
+                    ctxRef={ctxRef}
+                    elements={elements}
+                    setElements={setElements}
+                    color={color}
+
+                    tool={tool} />
             </div>
         </div>
     );
