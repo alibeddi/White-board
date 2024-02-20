@@ -1,8 +1,37 @@
-# React + Vite
+# Real-Time Whiteboard Sharing App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the official repository of our cutting-edge Real-Time Whiteboard Sharing App! This project is an exciting journey into the development of a dynamic, interactive, and collaborative drawing environment designed to enhance remote communication and creativity. Our application is crafted to cater to a wide range of users, from educators and students to teams and creative professionals, providing an intuitive and immersive whiteboard experience.
 
-Currently, two official plugins are available:
+## Features at a Glance
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Our Real-Time Whiteboard Sharing App is packed with powerful features:
+
+- **Real-Time Room Creation and Joining**: Seamlessly create or join rooms with just a click, enabling instant collaboration.
+
+- **Exclusive Drawing Controls for Hosts**: The host controls the canvas, ensuring a smooth and coordinated drawing experience.
+
+- **Live Whiteboard Drawing and Sharing**: Engage in real-time drawing with multiple users, sharing your ideas and creations on the fly.
+
+- **Versatile Drawing Tools**: Unleash your creativity with a variety of drawing tools, including pencils, lines, and shapes, catering to all your artistic needs.
+
+- **Undo/Redo Functionality**: Easily correct mistakes or revisit previous steps with our intuitive undo and redo features.
+
+- **One-Click Whiteboard Clearing**: Clear your canvas with a single button, making room for new ideas and creations.
+
+- **Real-Time User Monitoring**: Keep track of the number of users in the room and monitor user join/leave alerts, ensuring you're always in sync with your team.
+
+- **Upcoming Chat Feature**: Stay tuned for our next update, which will introduce a chat feature, adding an extra layer of interaction to your collaborative sessions.
+
+## Deployment and Live Demos
+
+Upon completion, we will deploy our full-stack application, providing you with a live link to experience the app in action. Our repository will also include comprehensive source code, allowing you to dive deep into the mechanics of our application and perhaps even contribute to its evolution.
+
+## Stay Tuned!
+
+We are committed to providing a top-notch collaborative tool that meets your needs and exceeds your expectations. Keep an eye on this space for updates, including the live link and source code.
+
+We hope you're as excited as we are about this journey. Your feedback and contributions are welcome, as they will help us improve and enhance this project. Let's create something amazing together!
+
+---
+
+**Hope You Will Like This!** 🌟
