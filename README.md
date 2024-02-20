@@ -21,6 +21,36 @@ Our Real-Time Whiteboard Sharing App is packed with powerful features:
 - **Real-Time User Monitoring**: Keep track of the number of users in the room and monitor user join/leave alerts, ensuring you're always in sync with your team.
 
 - **Upcoming Chat Feature**: Stay tuned for our next update, which will introduce a chat feature, adding an extra layer of interaction to your collaborative sessions.
+- 
+## Quick Start Guide
+Get up and running with our Real-Time Whiteboard Sharing App in just a few easy steps:
+
+-**Clone the Repository**
+
+git clone https://github.com/alibeddi/white-board.git
+cd real-time-whiteboard
+
+-**Install Dependencies**
+Navigate to the project directory and install the required dependencies.
+
+yarn install
+
+-**Start the Server**
+Launch the backend server to start hosting the application.
+
+ yarn run dev
+ 
+-**Access the App**
+Open your web browser and navigate to http://localhost:5173 to start using the app.
+
+-**Create or Join a Room**
+Use the interface to create a new room or join an existing one with the provided room ID.
+
+-**Start Drawing**
+Once in a room, use the drawing tools to start collaborating in real-time.
+
+
+Happy Collaborating! 🎨
 
 ## Deployment and Live Demos
 
