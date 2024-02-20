@@ -1,0 +1,27 @@
+{
+    "heroSection": {
+        "btnName": "Sign Up",
+        "imgDescription": "The first educational platform"
+    },
+    "whoWeAre": {
+        "btnName": "Start Now"
+    },
+    "head": {
+        "title": "Imtiyaz Academy"
+    },
+    "navbar": {
+        "signUp": "Sign Up",
+        "signIn": "Sign In",
+        "links": {
+            "home": "Home",
+            "whoWeAre": "Who we Are?",
+            "teachers": "Teachers",
+            "content": "Content",
+            "advices": "Advices"
+        }
+    },
+    "signUpSection": {
+        "title": "Sign Up",
+        "btnName": "Sign Up"
+    }
+}

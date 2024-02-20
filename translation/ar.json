@@ -1,0 +1,27 @@
+{
+    "heroSection": {
+        "btnName": "إشترك الآن",
+        "imgDescription": ""
+    },
+    "whoWeAre": {
+        "btnName": "إبدأ الآن"
+    },
+    "head": {
+        "title": "أكاديمية إمتياز"
+    },
+    "navbar": {
+        "signUp": "إشترك الآن",
+        "signIn": "تسجيل الدخول",
+        "links": {
+            "home": "الرئيسية",
+            "whoWeAre": "من نحن؟",
+            "teachers": "الأساتذة",
+            "content": "المحتوى",
+            "advices": "نصائح"
+        }
+    },
+    "signUpSection": {
+        "title": "إشترك الآن",
+        "btnName": "Sign Up"
+    }
+}
