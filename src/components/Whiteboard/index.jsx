@@ -15,33 +15,24 @@ const WhiteBoard = ({
 
     const [isDrawing, setIsDrawing] = useState(false)
     const redrawCanvas = () => {
+
         const ctx = ctxRef.current;
-        const canvas = canvasRef.current;
-
-        // Reset transformations to ensure the entire canvas is cleared correctly
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        // Reapply transformations for the current zoom level
-        ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.scale(scale, scale);
-        ctx.translate(-canvas.width / 2, -canvas.height / 2);
-
-        // Create a new Rough.js canvas with the transformed context
-        const roughCanvas = rough.canvas(canvas);
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        const roughCanvas = rough.canvas(canvasRef.current)
 
         elements.forEach((element) => {
-            // Adjust drawing commands to use the transformed coordinates
             if (element.type === 'pencil') {
-                roughCanvas.linearPath(element.path, { stroke: element.stroke, strokeWidth: 5 / scale, roughness: 0.5 });
+                roughCanvas.linearPath(element.path, { stroke: element.stroke, strokeWidth: 5, roughness: 0.5 })
             } else if (element.type === 'line') {
-                roughCanvas.line(element.offsetX, element.offsetY, element.width, element.height, { stroke: element.stroke, strokeWidth: 5 / scale, roughness: 0.5 });
+                const { offsetX, offsetY, width, height, stroke } = element
+                roughCanvas.line(offsetX, offsetY, width, height, { stroke, strokeWidth: 5, roughness: 0.5 })
             } else if (element.type === 'rect') {
-                roughCanvas.rectangle(element.offsetX, element.offsetY, element.width, element.height, { stroke: element.stroke, strokeWidth: 5 / scale, roughness: 0.5 });
+                const { offsetX, offsetY, width, height, stroke } = element
+                roughCanvas.rectangle(offsetX, offsetY, width, height, { stroke, strokeWidth: 5, roughness: 0.5 })
             }
-        });
-    };
 
+        })
+    };
 
     useEffect(() => {
         const canvas = canvasRef.current
@@ -66,20 +57,12 @@ const WhiteBoard = ({
         const roughCanvas = rough.canvas(canvasRef.current)
 
         if (elements.length > 0) {
-            const ctx = ctxRef.current;
-            const canvas = canvasRef.current;
-
-            // Reset the transformation to clear the entire scaled canvas
-            ctx.setTransform(0, 0, 0, 1, 0, 0);
-
-            // Clear the canvas. Use the scaled dimensions to ensure everything is cleared
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Reapply the transformations after clearing
-            ctx.translate(canvas.width / 2, canvas.height / 2);
-            ctx.scale(scale, scale);
-            ctx.translate(-canvas.width / 2, -canvas.height / 2);
+            // Calculate the top-left corner of the transformed canvas
+            const topLeftX = canvasRef.current.width * (100 - zoomLevel) / 100
+            const topLeftY = canvasRef.current.height * (100 - zoomLevel) / 100
+            ctxRef.current.clearRect(-topLeftX, -topLeftY, canvasRef.current.width + canvasRef.current.width * (100 - zoomLevel) / 100, canvasRef.current.height + canvasRef.current.height * (100 - zoomLevel) / 100)
         }
+
         elements.forEach((element) => {
             if (element.type === 'pencil') {
                 roughCanvas.linearPath(element.path, { stroke: element.stroke, strokeWidth: 5, roughness: 0.5 })
