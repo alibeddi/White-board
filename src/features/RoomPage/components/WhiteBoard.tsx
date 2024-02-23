@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import Element from '../types/Element';
@@ -25,12 +27,15 @@ const WhiteBoard: React.FC<WhiteBoardProps> = ({
     zoomLevel,
 }) => {
     const [isDrawing, setIsDrawing] = useState(false);
+    console.log(canvasRef)
+    console.log(ctxRef)
 
     const redrawCanvas = () => {
         const ctx = ctxRef.current;
-        if (ctx && canvasRef.current) {
+        if (ctx) {
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            const roughCanvas = rough.canvas(canvasRef.current);
+            const roughCanvas = rough.canvas(canvasRef.current!);
+
 
             elements.forEach((element) => {
                 if (element.type === 'pencil' && element.path) {
@@ -52,6 +57,32 @@ const WhiteBoard: React.FC<WhiteBoardProps> = ({
             });
         }
     };
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+                console.log('Canvas context:', ctx); // Check if context is obtained successfully
+                ctxRef.current = ctx;
+            }
+        }
+        const handleResize = () => {
+            if (canvasRef.current) {
+                canvasRef.current.width = window.innerWidth * 2;
+                canvasRef.current.height = window.innerHeight * 2;
+                redrawCanvas();
+            }
+        };
+
+        handleResize(); // Call handleResize initially
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [canvasRef]);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -84,27 +115,28 @@ const WhiteBoard: React.FC<WhiteBoardProps> = ({
     useLayoutEffect(() => {
         if (canvasRef.current) {
             const roughCanvas = rough.canvas(canvasRef.current);
-
             if (elements.length > 0) {
+
                 const topLeftX = canvasRef.current.width * (100 - zoomLevel) / 100;
                 const topLeftY = canvasRef.current.height * (100 - zoomLevel) / 100;
                 ctxRef.current?.clearRect(-topLeftX, -topLeftY, canvasRef.current.width + canvasRef.current.width * (100 - zoomLevel) / 100, canvasRef.current.height + canvasRef.current.height * (100 - zoomLevel) / 100);
             }
 
+
             elements.forEach((element) => {
                 if (element.type === 'pencil' && element.path) {
                     const path: any = element.path.map(point => {
                         if (point.length >= 2) {
-                            return [point[0], point[1]] as [number, number]; // Asserting each point as a tuple
+                            return [point[0], point[1]] as [number, number];
                         } else {
                             throw new Error("Invalid path point encountered");
                         }
                     });
                     roughCanvas.linearPath(path, { stroke: element.stroke, strokeWidth: 5, roughness: 0.5 });
                 } else if (element.type === 'line') {
-
-                    const { offsetX, offsetY, width, height, stroke } = element;
-                    roughCanvas.line(offsetX, offsetY, width ?? offsetX, height ?? offsetY, { stroke, strokeWidth: 5, roughness: 0.5 });
+                    const { offsetX, offsetY, width, height, stroke } = element
+                    console.log(offsetX, offsetY, width, height, stroke)
+                    roughCanvas.line(offsetX, offsetY, width ?? offsetX, height ?? offsetY, { stroke, strokeWidth: 5, roughness: 0.5 })
                 } else if (element.type === 'rect') {
                     const { offsetX, offsetY, width, height, stroke } = element;
                     roughCanvas.rectangle(offsetX, offsetY, width ?? 0, height ?? 0, { stroke, strokeWidth: 5, roughness: 0.5 });
@@ -184,12 +216,34 @@ const WhiteBoard: React.FC<WhiteBoardProps> = ({
                             )
                         );
                     }
-                } else if (tool === "line" || tool === "rect") {
-                    setElements((prevElements) =>
-                        prevElements.map((element, index) =>
-                            index === prevElements.length - 1 ? { ...element, width: offsetX - element.offsetX, height: offsetY - element.offsetY } : element
-                        )
-                    );
+                } else if (tool === "line") {
+                    setElements((prevElements) => {
+                        return prevElements.map((element, index) => {
+                            if (index === prevElements.length - 1) {
+                                return {
+                                    ...element,
+                                    width: offsetX,
+                                    height: offsetY
+                                };
+                            } else {
+                                return element;
+                            }
+                        });
+                    });
+                } else if (tool === "rect") {
+                    setElements((prevElements) => {
+                        return prevElements.map((element, index) => {
+                            if (index === prevElements.length - 1) {
+                                return {
+                                    ...element,
+                                    width: offsetX - element.offsetX,
+                                    height: offsetY - element.offsetY
+                                };
+                            } else {
+                                return element;
+                            }
+                        });
+                    });
                 }
             }
         }
@@ -204,9 +258,9 @@ const WhiteBoard: React.FC<WhiteBoardProps> = ({
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
-            className="border border-dark border-3 overflow-hidden"
+            className="border border-dark w-full h-full"
         >
-            <canvas ref={canvasRef}></canvas>
+            <canvas ref={canvasRef} ></canvas>
         </div>
     );
 };

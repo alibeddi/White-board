@@ -1,7 +1,10 @@
+'use client'
+
 import React, { useState } from 'react';
 
 import { Socket } from 'socket.io-client'; // Assuming you're using socket.io-client
 import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 
 interface RoomData {
     name: string;
@@ -20,7 +23,7 @@ interface JoinRoomFormProps {
 const JoinRoomForm: React.FC<JoinRoomFormProps> = ({ uuid, socket, setUser }) => {
     const [roomId, setRoomId] = useState<string>('');
     const [name, setName] = useState<string>('');
-    const navigate = useNavigate();
+    const router = useRouter()
 
     const handleJoinRoom = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // Prevent the default form submission behavior
@@ -35,7 +38,7 @@ const JoinRoomForm: React.FC<JoinRoomFormProps> = ({ uuid, socket, setUser }) =>
         };
 
         setUser(roomData); // Set the user data with the new room information
-        navigate(`/${roomId}`); // Navigate to the room's page
+        router.push(`/${roomId}`); // Navigate to the room's page
         socket.emit('userJoined', roomData); // Emit the userJoined event with the room data
     };
 

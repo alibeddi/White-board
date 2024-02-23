@@ -1,25 +1,50 @@
-import "./index.css";
+'use client'
+
+import React, { useEffect, useState } from 'react';
+import { Socket, io } from 'socket.io-client';
 
 import CreateRoomForm from "./components/CreateRoomForm";
 import JoinRoomForm from "./components/JoinRoomForm";
-import React from 'react';
-import { Socket } from 'socket.io-client';
+
+const server = 'http://localhost:5000'
+const connectionOptions = {
+    "force new connection": true,
+    reconnectionAttempts: Infinity,
+    timeout: 10000,
+    transports: ["websocket"],
+};
 
 // Define the props type
 interface FormsProps {
-    uuid: () => string;
-    socket: Socket; // Assuming you're using socket.io-client
-    setUser: (user: any) => void; // Replace 'any' with a more specific type as needed
+
 }
 
-const Forms: React.FC<FormsProps> = ({ uuid, socket, setUser }) => {
+const Forms: React.FC<FormsProps> = () => {
+    const [user, setUser] = useState({})
+
+    const socket = io(server, connectionOptions)
+    useEffect(() => {
+        socket.on('user-joined', (data: any) => {
+            if (data.success) {
+                setUser(data.user)
+            } else {
+                alert(data.message)
+            }
+        })
+    }, [])
+    const uuid = () => {
+        let s4 = () => {
+            return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+        }
+        return (s4() + s4() + "-" + s4() + "-" + s4() + "-" + s4() + "-" + s4() + s4() + s4());
+    }
     return (
-        <div className="row h-100 pt-5">
-            <div className="col-md-4 mt-5 form-box border p-5 border-primary rounded-2 mx-auto d-flex flex-column align-items-center">
+        <div className="row flex gap-24 h-full pt-5">
+            <div className="col-md-4 mt-5 form-box border p-5 border-blue rounded-2 mx-auto flex flex-col items-center">
                 <h1 className="text-primary fw-bold">Create Room</h1>
                 <CreateRoomForm uuid={uuid} socket={socket} setUser={setUser} />
             </div>
-            <div className="col-md-4 mt-5 form-box border p-5 border-primary rounded-2 mx-auto d-flex flex-column align-items-center">
+            <div className="col-md-4 mt-5 form-box border p-5 border-blue rounded-2 mx-auto flex flex-col items-center">
                 <h1 className="text-primary fw-bold">Join Room</h1>
                 <JoinRoomForm uuid={uuid} socket={socket} setUser={setUser} />
             </div>
