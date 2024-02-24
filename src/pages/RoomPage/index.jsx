@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react";
+
 import Line from '../../../public/icons/line.svg'
 import Pencil from '../../../public/icons/pencile.svg'
 import Rect from '../../../public/icons/rectangle.svg'
@@ -5,19 +7,29 @@ import Redo from '../../../public/icons/redo.svg'
 import Trash from '../../../public/icons/trash.svg'
 import Undo from '../../../public/icons/undo.svg'
 import WhiteBoard from "../../components/Whiteboard";
-import { useRef } from "react";
-import { useState } from "react";
+
 const RoomPage = () => {
     const canvasRef = useRef(null)
     const ctxRef = useRef(null)
 
-    console.log(ctxRef)
     const [tool, setTool] = useState("pencil");
     const [color, setColor] = useState('black')
     const [elements, setElements] = useState([])
     const [history, setHistory] = useState([])
     const [zoomLevel, setZoomLevel] = useState(100);
     const [scale, setScale] = useState(1);
+    const [isHovering, setIsHovering] = useState(false);
+
+    useEffect(() => {
+        const handleMouseMove = (event) => {
+            const { clientX, clientY } = event;
+            setIsHovering(clientX < window.innerWidth / 10 && clientY < window.innerHeight / 2);
+        };
+        window.addEventListener("mousemove", handleMouseMove);
+        return () => {
+            window.removeEventListener("mousemove", handleMouseMove);
+        };
+    }, []);
 
     const handleUndo = () => {
         if (elements.length > 0) {
@@ -59,71 +71,76 @@ const RoomPage = () => {
     };
 
     return (
-        <div className=" d-flex align-items-center jusitfy-content-center">
-            {/* <h1 className="text-center py-5">White Board Sharing App
-                <span className="text-primary"> [Users Online:0]</span>
-            </h1> */}
-            <div className=" position-fixed gap-3  start-0 flex-column bg-white rounded-3 shadow mx-3 p-2 mb-3 d-flex align-items-center jusitfy-content-center" style={{
-                width: '90px',
-                top: "100px"
-            }}>
-                <div className="d-flex flex-column justify-content-center gap-2">
-                    <div className="d-flex gap-1 align-items-center ">
-                        <button
-                            className={`btn ${tool === 'pencil' ? 'active' : ''}`}
-                            onClick={() => setTool('pencil')}
-                        >
-                            <img src={Pencil} style={{ width: '10px' }} />
-                        </button>
+        <div className="d-flex align-items-center justify-content-center">
+            {isHovering && (
+                <div className="position-fixed gap-3 start-0 flex-column bg-white rounded-3 shadow mx-3 p-2 mb-3 d-flex align-items-center justify-content-center" style={{
+                    width: '90px',
+                    top: "100px"
+                }}>
+                    <div className="d-flex flex-column justify-content-center gap-2">
+                        <div className="d-flex gap-1 align-items-center ">
+                            <button
+                                className={`btn ${tool === 'pencil' ? 'active' : ''}`}
+                                onClick={() => setTool('pencil')}
+                            >
+                                <img src={Pencil} style={{ width: '10px' }} alt="Pencil" />
+                            </button>
+                        </div>
+                        <div className="d-flex gap-1 align-items-center ">
+                            <button
+                                className={`btn  ${tool === 'line' ? 'active' : ''}`}
+                                onClick={() => setTool('line')}
+                            >
+                                <img src={Line} style={{ width: '10px' }} alt="Line" />
+                            </button>
+                        </div>
+                        <div className="d-flex gap-1 align-items-center ">
+                            <button
+                                className={`btn  ${tool === 'rect' ? 'active' : ''}`}
+                                onClick={() => setTool('rect')}
+                            >
+                                <img src={Rect} style={{ width: '10px' }} alt="Rectangle" />
+                            </button>
+                        </div>
                     </div>
-                    <div className="d-flex gap-1 align-items-center ">
-                        <button
-                            className={`btn  ${tool === 'line' ? 'active' : ''}`}
-                            onClick={() => setTool('line')}
-                        >
-                            <img src={Line} style={{ width: '10px' }} />
-                        </button>
+                    <div className="d-flex align-items-center justify-content-start">
+                        <input
+                            type="color"
+                            id="color"
+                            value={color}
+                            onChange={(e) => setColor(e.target.value)}
+                        />
                     </div>
-                    <div className="d-flex gap-1 align-items-center ">
-                        <button
-                            className={`btn  ${tool === 'rect' ? 'active' : ''}`}
-                            onClick={() => setTool('rect')}
-                        >
-                            <img src={Rect} style={{ width: '10px' }} />
-                        </button>
+                    <div className='flex-column d-flex '>
+                        <button className="btn btn-outline-primary mt-1"
+                            disabled={elements.length === 0}
+                            onClick={() => handleUndo()}
+                        > <img src={Undo} style={{ width: '20px' }} alt="Undo" /></button>
+                        <button className="btn btn-outline-primary mt-1"
+                            disabled={history.length < 1}
+                            onClick={() => handleRedo()}
+                        > <img src={Redo} style={{ width: '20px' }} alt="Redo" /></button>
+                    </div>
+                    <div className="">
+                        <button className="btn btn-danger" onClick={handleClearCanvas}><img src={Trash} style={{ width: '20px' }} alt="Clear" /></button>
                     </div>
                 </div>
-                <div className="d-flex align-items-center justify-content-start">
-                    <input
-                        type="color"
-                        id="color"
-
-                        value={color}
-                        onChange={(e) => setColor(e.target.value)}
-                    />
-                </div>
-                <div className='flex-column d-flex '>
-                    <button className="btn btn-outline-primary mt-1"
-                        disabled={elements.length === 0}
-                        onClick={() => handleUndo()}
-                    > <img src={Undo} style={{ width: '20px' }} /></button>
-                    <button className="btn btn-outline-primary mt-1"
-                        disabled={history.length < 1}
-                        onClick={() => handleRedo()}
-                    > <img src={Redo} style={{ width: '20px' }} /></button>
-                </div>
-                <div className="">
-                    <button className="btn btn-danger" onClick={handleClearCanvas}><img src={Trash} style={{ width: '20px' }} /></button>
-                </div>
-            </div >
-            <div className="position-fixed  bottom-0 start-0 m-3 p-3 bg-white rounded-3 shadow " style={{
-                width: '90px'
-            }}>
-                <button onClick={handleZoomIn} class="btn btn-light d-block rounded-circle mb-2" style={{ width: "50px", height: "50px" }}> <span class="fs-4">+</span></button>
+            )}
+            <div
+                className="position-fixed bottom-0 start-0 m-3 p-3 bg-white rounded-3 shadow"
+                style={{ width: '90px' }}
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}
+            >
+                <button onClick={handleZoomIn} className="btn btn-light d-block rounded-circle mb-2" style={{ width: "50px", height: "50px" }}>
+                    <span className="fs-4">+</span>
+                </button>
                 <div className="text-center mb-2">
                     <span id="zoomLevel">{zoomLevel}%</span>
                 </div>
-                <button onClick={handleZoomOut} className="btn btn-light d-block rounded-circle" style={{ width: "50px", height: "50px" }}><span class="fs-4">-</span></button>
+                <button onClick={handleZoomOut} className="btn btn-light d-block rounded-circle" style={{ width: "50px", height: "50px" }}>
+                    <span className="fs-4">-</span>
+                </button>
             </div>
             <div className="canvas-box">
                 <WhiteBoard
