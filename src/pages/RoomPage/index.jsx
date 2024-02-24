@@ -45,7 +45,6 @@ const RoomPage = () => {
             const lastHistoryElement = history[history.length - 1];
             setElements((prev) => [...prev, lastHistoryElement]);
             setHistory((prev) => prev.slice(0, -1));
-            // After modifying the elements, call the function to redraw the canvas
             redrawCanvas([...elements, lastHistoryElement], scale);
         }
     }
