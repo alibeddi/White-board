@@ -1,12 +1,17 @@
+import Line from '../../../public/icons/line.svg'
+import Pencil from '../../../public/icons/pencile.svg'
+import Rect from '../../../public/icons/rectangle.svg'
+import Redo from '../../../public/icons/redo.svg'
+import Trash from '../../../public/icons/trash.svg'
+import Undo from '../../../public/icons/undo.svg'
 import WhiteBoard from "../../components/Whiteboard";
 import { useRef } from "react";
 import { useState } from "react";
-
 const RoomPage = () => {
     const canvasRef = useRef(null)
     const ctxRef = useRef(null)
 
-
+    console.log(ctxRef)
     const [tool, setTool] = useState("pencil");
     const [color, setColor] = useState('black')
     const [elements, setElements] = useState([])
@@ -54,82 +59,61 @@ const RoomPage = () => {
     };
 
     return (
-        <div className="row d-flex align-items-center jusitfy-content-center">
+        <div className=" d-flex align-items-center jusitfy-content-center">
             {/* <h1 className="text-center py-5">White Board Sharing App
                 <span className="text-primary"> [Users Online:0]</span>
             </h1> */}
-            <div className=" position-fixed top-0 start-50 translate-middle-x bg-white w-full  mx-auto px-5 mb-3 d-flex align-items-center jusitfy-content-center">
-                <div className="d-flex col-md-2 justify-content-center gap-2">
+            <div className=" position-fixed gap-3  start-0 flex-column bg-white rounded-3 shadow mx-3 p-2 mb-3 d-flex align-items-center jusitfy-content-center" style={{
+                width: '90px',
+                top: "100px"
+            }}>
+                <div className="d-flex flex-column justify-content-center gap-2">
                     <div className="d-flex gap-1 align-items-center ">
-                        <label htmlFor="pencil">Pencil</label>
-                        <input
-                            type="radio"
-                            name="tool"
-                            id="pencil"
-                            checked={tool === "pencil"}
-                            value="pencil"
-                            onChange={(e) => setTool(e.target.value)} />
+                        <button
+                            className={`btn ${tool === 'pencil' ? 'active' : ''}`}
+                            onClick={() => setTool('pencil')}
+                        >
+                            <img src={Pencil} style={{ width: '10px' }} />
+                        </button>
                     </div>
                     <div className="d-flex gap-1 align-items-center ">
-                        <label htmlFor="line">Line</label>
-                        <input
-                            type="radio"
-                            name="tool"
-                            id="line"
-                            checked={tool === "line"}
-                            value="line"
-                            onChange={(e) => setTool(e.target.value)} />
+                        <button
+                            className={`btn  ${tool === 'line' ? 'active' : ''}`}
+                            onClick={() => setTool('line')}
+                        >
+                            <img src={Line} style={{ width: '10px' }} />
+                        </button>
                     </div>
                     <div className="d-flex gap-1 align-items-center ">
-                        <label htmlFor="rect">Rectangle</label>
-                        <input
-                            type="radio"
-                            name="tool"
-                            id="rect"
-                            checked={tool === "rect"}
-                            value="rect"
-                            onChange={(e) => setTool(e.target.value)} />
+                        <button
+                            className={`btn  ${tool === 'rect' ? 'active' : ''}`}
+                            onClick={() => setTool('rect')}
+                        >
+                            <img src={Rect} style={{ width: '10px' }} />
+                        </button>
                     </div>
-                    {/* <div className="d-flex align-items-center gap-1">
-    <label htmlFor="shape-select">Choose a shape:</label>
-    <select
-        id="shape-select"
-        value={tool}
-        onChange={(e) => setTool(e.target.value)}
-        className="form-select"
-    >
-        <option value="rect">Rectangle</option>
-        <option value="circle">Circle</option>
-        <option value="line">Line</option>
-        <option value="pencil">Pencil</option>
-    </select>
-</div> */}
+                </div>
+                <div className="d-flex align-items-center justify-content-start">
+                    <input
+                        type="color"
+                        id="color"
 
+                        value={color}
+                        onChange={(e) => setColor(e.target.value)}
+                    />
                 </div>
-                <div className="col-md-3 mx-auto">
-                    <div className="d-flex align-items-center">
-                        <label htmlFor="color">Select Color: </label>
-                        <input
-                            type="color"
-                            id="color"
-                            className="ms-3"
-                            value={color}
-                            onChange={(e) => setColor(e.target.value)}
-                        />
-                    </div>
-                </div>
-                <dir className='col-md-3 d-flex gap-2'>
-                    <button className="btn btn-primary mt-1"
+                <div className='flex-column d-flex '>
+                    <button className="btn btn-outline-primary mt-1"
                         disabled={elements.length === 0}
                         onClick={() => handleUndo()}
-                    >Undo</button>
+                    > <img src={Undo} style={{ width: '20px' }} /></button>
                     <button className="btn btn-outline-primary mt-1"
                         disabled={history.length < 1}
                         onClick={() => handleRedo()}
-                    >Redo</button>
-                </dir>
-                <div className="col-md-2">
-                    <button className="btn btn-danger" onClick={handleClearCanvas}> Clear Canvas</button>
+                    > <img src={Redo} style={{ width: '20px' }} /></button>
+                </div>
+                <div className="">
+                    <button className="btn btn-danger" onClick={handleClearCanvas}><img src={Trash} style={{ width: '20px' }} /></button>
                 </div>
             </div >
             <div className="position-fixed  bottom-0 start-0 m-3 p-3 bg-white rounded-3 shadow " style={{

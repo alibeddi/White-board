@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Forms from "./components/Forms";
 import RoomPage from "./pages/RoomPage";
 import io from "socket.io-client";
+
 const server = 'http://localhost:5000'
 const connectionOptions = {
   "force new connection": true,

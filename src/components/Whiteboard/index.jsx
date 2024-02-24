@@ -12,7 +12,7 @@ const WhiteBoard = ({
     tool,
     color, scale, zoomLevel
 }) => {
-
+    console.log(canvasRef)
     const [isDrawing, setIsDrawing] = useState(false)
     const redrawCanvas = () => {
 
@@ -30,7 +30,6 @@ const WhiteBoard = ({
                 const { offsetX, offsetY, width, height, stroke } = element
                 roughCanvas.rectangle(offsetX, offsetY, width, height, { stroke, strokeWidth: 5, roughness: 0.5 })
             }
-
         })
     };
 
