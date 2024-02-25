@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 
-import Line from '../../../public/icons/line.svg'
-import Pencil from '../../../public/icons/pencile.svg'
-import Rect from '../../../public/icons/rectangle.svg'
-import Redo from '../../../public/icons/redo.svg'
-import Trash from '../../../public/icons/trash.svg'
-import Undo from '../../../public/icons/undo.svg'
+import Line from '/icons/line.svg'
+import Pencil from '/icons/pencile.svg'
+import Rect from '/icons/rectangle.svg'
+import Redo from '/icons/redo.svg'
+import Trash from '/icons/trash.svg'
+import Undo from '/icons/undo.svg'
 import WhiteBoard from "../../components/Whiteboard";
 
 const RoomPage = () => {
@@ -21,9 +21,24 @@ const RoomPage = () => {
     const [isHovering, setIsHovering] = useState(false);
 
     useEffect(() => {
+        const handleBeforeUnload = (event) => {
+            if (elements.length > 0) {
+                event.preventDefault();
+                event.returnValue = '';
+            }
+        };
+
+        window.addEventListener("beforeunload", handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+    }, [elements]);
+
+    useEffect(() => {
         const handleMouseMove = (event) => {
             const { clientX, clientY } = event;
-            setIsHovering(clientX < window.innerWidth / 10 && clientY < window.innerHeight / 2);
+            setIsHovering(clientX < window.innerWidth / 10 && clientY < window.innerHeight*2 /3 );
         };
         window.addEventListener("mousemove", handleMouseMove);
         return () => {
