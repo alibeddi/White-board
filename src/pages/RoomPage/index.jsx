@@ -163,7 +163,7 @@ const RoomPage = () => {
                     elements={elements}
                     setElements={setElements}
                     color={color}
-                    scale={scale}
+                    scale={scale}  
                     tool={tool}
                     zoomLevel={zoomLevel}
                 />
