@@ -12,7 +12,7 @@ const WhiteBoard = ({
     tool,
     color, scale, zoomLevel
 }) => {
-    console.log(canvasRef)
+
     const [isDrawing, setIsDrawing] = useState(false)
     const redrawCanvas = () => {
 
